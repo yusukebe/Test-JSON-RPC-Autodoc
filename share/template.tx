@@ -1,0 +1,32 @@
+: for $requests -> $request {
+
+## METHOD `<: $request.method :>`
+
+### Request
+
+```json
+<: $request.raw_request.content | mark_raw -:>
+```
+
+### Parameters
+
+: for $request.rule.keys() -> $name {
+: if (my $documentation = $request.rule[$name]["documentation"]) {
+* <: $name | mark_raw :> - <: $documentation :>
+: }else{
+* <: $name | mark_raw :>
+: }
+: for $request.rule[$name].keys() -> $prop {
+: next if $prop == 'documentation';
+  * `<: $prop | mark_raw :>`: **<: $request.rule[$name][$prop] :>**
+: }
+: }
+
+### Response
+
+```json
+<: $request.response.pretty_json | mark_raw -:>
+```
+
+: }
+
