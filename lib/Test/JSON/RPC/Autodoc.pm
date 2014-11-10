@@ -33,10 +33,9 @@ sub new_request {
 sub write {
     my ($self, $filename) = @_;
     my $dir = './share';
-    $dir = File::ShareDir::dist_file('Test-JSON-RPC-Auto') unless -d $dir;
-    my $template = path($dir)->child('template.tx');
-    my $tx = Text::Xslate->new();
-    my $text = $tx->render($template, { requests => $self->{requests} });
+    $dir = File::ShareDir::dist_dir('Test-JSON-RPC-Autodoc') unless -d $dir;
+    my $tx = Text::Xslate->new( path => $dir );
+    my $text = $tx->render('template.tx', { requests => $self->{requests} });
     path($self->{document_root}, $filename)->spew_utf8($text);
 }
 

@@ -52,6 +52,17 @@
       }
    },
    "release_status" : "unstable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/yusukebe/Test-JSON-RPC-Autodoc/issues"
+      },
+      "homepage" : "https://github.com/yusukebe/Test-JSON-RPC-Autodoc",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/yusukebe/Test-JSON-RPC-Autodoc.git",
+         "web" : "https://github.com/yusukebe/Test-JSON-RPC-Autodoc"
+      }
+   },
    "version" : "0.01",
    "x_authority" : "cpan:YUSUKEBE"
 }
