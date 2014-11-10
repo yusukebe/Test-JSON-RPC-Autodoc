@@ -1,6 +1,4 @@
 name = "Test-JSON-RPC-Autodoc"
-# badges = ["travis"]
+badges = ["travis"]
 authority="cpan:YUSUKEBE"
-
 module_maker="ModuleBuildTiny"
-

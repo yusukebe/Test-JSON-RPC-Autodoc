@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/yusukebe/Test-JSON-RPC-Autodoc.svg?branch=master)](https://travis-ci.org/yusukebe/Test-JSON-RPC-Autodoc)
 # NAME
 
 Test::JSON::RPC::Autodoc - It's new $module
