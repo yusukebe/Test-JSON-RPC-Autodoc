@@ -45,7 +45,42 @@ Test::JSON::RPC::Autodoc - Generate documents automatically with the tests for J
 
 # DESCRIPTION
 
-Test::JSON::RPC::Autodoc is ...
+**Test::JSON::RPC::Autodoc** is a software for testing JSON-RPC Web applications. This module generate the Markdown formatted documentations about RPC parameters, requests, and responses. Using **Test::JSON::RPC::Autodoc**, we write the integrated tests, then these will be useful to share the JSON-RPC parameter rules with other developers.
+
+# METHODS
+
+## **new(%options)**
+
+    my $test = Test::JSON::RPC::Autodoc->new(
+        app => $app, # PSGI application, required
+        document_root => './documents', # output directory for documents, optional, default is './docs'
+        path => '/rpc' # JSON-RPC endpoint path, optional, default is '/'
+    );
+
+Create a new Test::JSON::RPC::Autodoc instance. Possible options are:
+
+- `app => $app`
+
+    PSGI application, required.
+
+- `document_root => './documents'`
+
+    Output directory for documents, optional, default is './docs'.
+
+- `path => '/rpc'`
+
+    JSON-RPC endpoint path, optional, default is '/'.
+
+## **new\_request()**
+
+Return a new Test::JSON::RPC::Autodoc::Request instance.
+
+## **write('echo.md')**
+
+# SEE ALSO
+
+- [Test::JsonAPI::Autodoc](https://metacpan.org/pod/Test::JsonAPI::Autodoc)
+- "autodoc": [https://github.com/r7kamura/autodoc](https://github.com/r7kamura/autodoc)
 
 # LICENSE
 
