@@ -67,17 +67,9 @@ sub post_ok {
     return $res;
 }
 
-sub method {
-    shift->{method};
-}
-
-sub raw_request {
-    shift->{raw_request};
-}
-
-sub rule {
-    shift->{rule};
-}
+sub method { shift->{method} }
+sub raw_request { shift->{raw_request} }
+sub rule { shift->{rule} }
 
 sub response {
     my $self = shift;
