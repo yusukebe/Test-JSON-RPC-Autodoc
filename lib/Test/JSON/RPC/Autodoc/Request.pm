@@ -1,8 +1,8 @@
 package Test::JSON::RPC::Autodoc::Request;
 use strict;
 use warnings;
+use parent qw/HTTP::Request/;
 use Clone qw/clone/;
-use HTTP::Request;
 use JSON qw/to_json/;
 use Test::More qw//;
 use Try::Tiny;
@@ -11,12 +11,12 @@ use Test::JSON::RPC::Autodoc::Validator;
 use Plack::Test::MockHTTP;
 
 sub new {
-    my ( $class, %opt ) = @_;
-    my $self = bless {
-        app  => $opt{app},
-        path => $opt{path} || '/',
-        id   => $opt{id} || 1
-    }, $class;
+    my ($class, %opt) = @_;
+    my $self = $class->SUPER::new();
+    $self->{method} = 'POST';
+    $self->uri($opt{path} || '/');
+    $self->{app} = $opt{app};
+    $self->{id} = $opt{id} || 1;
     return $self;
 }
 
@@ -41,6 +41,8 @@ sub params {
 sub post_ok {
     my ($self, $method, $params) = @_;
     my $args = $self->{validator}->validate(%$params);
+    Test::More::ok $args;
+
     my $json = to_json(
         {
             jsonrpc => '2.0',
@@ -49,26 +51,19 @@ sub post_ok {
             params  => $params,
         }, { pretty => 1 }
     );
-    my $req = HTTP::Request->new(
-        'POST', $self->{path},
-        [
-            'Content-Type' => 'application/json',
-            'Content-Length' => length $json
-        ],
-        $json
-    );
+    $self->header('Content-Type' => 'application/json');
+    $self->header('Content-Length' => length $json);
+    $self->content($json);
 
     my $mock = Plack::Test::MockHTTP->new($self->{app});
-    my $res = $mock->request($req);
+    my $res = $mock->request($self);
     Test::More::is($res->code, 200);
     $self->{method} = $method;
-    $self->{raw_request} = $req;
     $self->{response} = $res;
     return $res;
 }
 
 sub method { shift->{method} }
-sub raw_request { shift->{raw_request} }
 sub rule { shift->{rule} }
 
 sub response {

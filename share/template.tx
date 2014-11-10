@@ -1,11 +1,12 @@
 : for $requests -> $request {
+: next if !$request.response;
 
 ## METHOD `<: $request.method :>`
 
 ### Request
 
 ```json
-<: $request.raw_request.content | mark_raw -:>
+<: $request.content | mark_raw -:>
 ```
 
 ### Parameters
