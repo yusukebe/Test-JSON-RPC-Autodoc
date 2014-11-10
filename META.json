@@ -1,5 +1,5 @@
 {
-   "abstract" : "It's new $module",
+   "abstract" : "Generate documents automatically with the tests for JSON-RPC",
    "author" : [
       "Yusuke Wada <yusuke@kamawada.com>"
    ],
