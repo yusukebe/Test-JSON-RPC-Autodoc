@@ -58,7 +58,7 @@ sub post_ok {
     return $res;
 }
 
-sub post_ng {
+sub post_not_ok {
     my ($self, $method, $params) = @_;
     my $args = $self->{validator}->validate(%$params);
 

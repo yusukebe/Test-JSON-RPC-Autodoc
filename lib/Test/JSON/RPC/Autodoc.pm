@@ -174,6 +174,10 @@ Description of the parameter. This will be used when the Markdown documents are 
 Post parameters to the specified method on your JSON-RPC application and check the parameters as tests.
 If the response code is 200, it will return C<OK>.
 
+=head3 B<< $request->post_not_ok($method, $params) >>
+
+If the parameters are not valid or the response code is not C<200>, it will be passed.
+
 =head3 B<< $request->response() >>
 
 Return the last response as a Test::JSON::RPC::Autodoc::Response instance.

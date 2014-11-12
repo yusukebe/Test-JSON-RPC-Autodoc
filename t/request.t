@@ -12,8 +12,8 @@ ok $request;
 $request->params(
     foo => { isa => 'Int', required => 1 }
 );
-$request->post_ng('method', {});
-$request->post_ng('method', { foo => 'bar' });
+$request->post_not_ok('method', {});
+$request->post_not_ok('method', { foo => 'bar' });
 $request->post_ok('method', { foo => 10 });
 
 is $request->method, 'method';

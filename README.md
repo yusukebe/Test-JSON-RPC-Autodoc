@@ -121,6 +121,10 @@ Attributes of rules are below:
 Post parameters to the specified method on your JSON-RPC application and check the parameters as tests.
 If the response code is 200, it will return `OK`.
 
+### **$request->post\_not\_ok($method, $params)**
+
+If the parameters are not valid or the response code is not `200`, it will be passed.
+
 ### **$request->response()**
 
 Return the last response as a Test::JSON::RPC::Autodoc::Response instance.
