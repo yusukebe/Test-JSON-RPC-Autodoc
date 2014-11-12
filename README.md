@@ -104,7 +104,7 @@ Attributes of rules are below:
 
 - `required => $value: Bool`
 
-    If true, the parameter must be setted.
+    If true, the parameter must be set.
 
 - `default => $value: Str`
 
@@ -127,7 +127,7 @@ Return the last response as a Test::JSON::RPC::Autodoc::Response instance.
 
 ## Test::JSON::RPC::Autodoc::Response
 
-Test::JSON::RPC::Autodoc::Response is a sub-class of [HTTP::Response](https://metacpan.org/pod/HTTP::Response). Extended with these methods.
+This module extends [HTTP::Response](https://metacpan.org/pod/HTTP::Response) with the methods below:
 
 ### **$response->from\_json()**
 
@@ -136,7 +136,7 @@ Return a Perl-Object of the JSON response content. That is parsed by JSON parser
 # SEE ALSO
 
 - [Test::JsonAPI::Autodoc](https://metacpan.org/pod/Test::JsonAPI::Autodoc)
-- "autodoc": [https://github.com/r7kamura/autodoc](https://github.com/r7kamura/autodoc)
+- [https://github.com/r7kamura/autodoc](https://github.com/r7kamura/autodoc)
 - [Shodo](https://metacpan.org/pod/Shodo)
 - [Data::Validator](https://metacpan.org/pod/Data::Validator)
 
