@@ -155,7 +155,7 @@ The type of the property, which can be C<Mouse> Type constraint name.
 
 =item C<< required => $value: Bool >>
 
-If true, the parameter must be setted.
+If true, the parameter must be set.
 
 =item C<< default => $value: Str >>
 
@@ -180,7 +180,7 @@ Return the last response as a Test::JSON::RPC::Autodoc::Response instance.
 
 =head2 Test::JSON::RPC::Autodoc::Response
 
-Test::JSON::RPC::Autodoc::Response is a sub-class of L<HTTP::Response>. Extended with these methods.
+This module extends L<HTTP::Response> with the methods below:
 
 =head3 B<< $response->from_json() >>
 
@@ -192,7 +192,7 @@ Return a Perl-Object of the JSON response content. That is parsed by JSON parser
 
 =item L<Test::JsonAPI::Autodoc>
 
-=item "autodoc": L<https://github.com/r7kamura/autodoc>
+=item L<https://github.com/r7kamura/autodoc>
 
 =item L<Shodo>
 

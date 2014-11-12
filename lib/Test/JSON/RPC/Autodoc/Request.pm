@@ -4,7 +4,7 @@ use warnings;
 use parent qw/HTTP::Request/;
 use Clone qw/clone/;
 use JSON qw/to_json/;
-use Test::More qw//;
+use Test::Builder;
 use Try::Tiny;
 use Test::JSON::RPC::Autodoc::Response;
 use Test::JSON::RPC::Autodoc::Validator;
@@ -33,7 +33,7 @@ sub params {
             }
         }
     }
-    my $validator = Data::Validator->new(%params);
+    my $validator = Data::Validator->new(%params)->with('NoThrow');
     $self->{validator} = $validator;
     return $validator;
 }
@@ -41,8 +41,41 @@ sub params {
 sub post_ok {
     my ($self, $method, $params) = @_;
     my $args = $self->{validator}->validate(%$params);
-    Test::More::ok $args;
+    my $ok = 1;
+    $ok = 0 if $self->{validator}->has_errors;
+    $self->{validator}->clear_errors();
 
+    $self->_make_request($method, $params);
+
+    my $mock = Plack::Test::MockHTTP->new($self->{app});
+    my $res = $mock->request($self);
+    $ok = 0 if $res->code != 200;
+    my $Test = Test::Builder->new();
+    $Test->ok($ok);
+
+    $self->{method} = $method;
+    $self->{response} = $res;
+    return $res;
+}
+
+sub post_ng {
+    my ($self, $method, $params) = @_;
+    my $args = $self->{validator}->validate(%$params);
+
+    my $ok = 1 if $self->{validator}->has_errors;
+    $self->{validator}->clear_errors();
+
+    $self->_make_request($method, $params);
+
+    my $mock = Plack::Test::MockHTTP->new($self->{app});
+    my $res = $mock->request($self);
+    $ok = 1 if $res->code == 200;
+    my $Test = Test::Builder->new();
+    $Test->ok($ok);
+}
+
+sub _make_request {
+    my ($self, $method, $params) = @_;
     my $json = to_json(
         {
             jsonrpc => '2.0',
@@ -54,13 +87,6 @@ sub post_ok {
     $self->header('Content-Type' => 'application/json');
     $self->header('Content-Length' => length $json);
     $self->content($json);
-
-    my $mock = Plack::Test::MockHTTP->new($self->{app});
-    my $res = $mock->request($self);
-    Test::More::is($res->code, 200);
-    $self->{method} = $method;
-    $self->{response} = $res;
-    return $res;
 }
 
 sub method { shift->{method} }

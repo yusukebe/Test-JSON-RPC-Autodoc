@@ -36,7 +36,7 @@ $rpc_req->post_ok('echo', { language => 'Perl', country => 'Japan' });
 my $res = $rpc_req->response();
 is $res->code, 200;
 my $data = $res->from_json();
-is $data->{result}{language}, 'Perl';
+is_deeply $data->{result}, { language => 'Perl', country => 'Japan' };
 
 $test->write('sample.md');
 

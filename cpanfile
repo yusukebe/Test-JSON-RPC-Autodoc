@@ -8,8 +8,10 @@ requires 'Plack';
 requires 'Data::Validator';
 requires 'File::ShareDir';
 requires 'Text::Xslate';
+requires 'Test::Simple';
 
 on 'test' => sub {
     requires 'Test::More', '0.98';
+    requires 'Test::Fatal', '0.013';
 };
 
