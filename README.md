@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/yusukebe/Test-JSON-RPC-Autodoc.svg?branch=master)](https://travis-ci.org/yusukebe/Test-JSON-RPC-Autodoc)
+[![Build Status](https://travis-ci.org/yusukebe/Test-JSON-RPC-Autodoc.png?branch=master)](https://travis-ci.org/yusukebe/Test-JSON-RPC-Autodoc)
 # NAME
 
 Test::JSON::RPC::Autodoc - Testing tools for auto generating documents of JSON-RPC applications
