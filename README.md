@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/yusukebe/Test-JSON-RPC-Autodoc.svg?branch=master)](https://travis-ci.org/yusukebe/Test-JSON-RPC-Autodoc)
 # NAME
 
-Test::JSON::RPC::Autodoc - Generate documents automatically with the tests for JSON-RPC
+Test::JSON::RPC::Autodoc - Testing tools for auto generating documents of JSON-RPC applications
 
 # SYNOPSIS
 
@@ -45,16 +45,18 @@ Test::JSON::RPC::Autodoc - Generate documents automatically with the tests for J
 
 # DESCRIPTION
 
-**Test::JSON::RPC::Autodoc** is a software for testing JSON-RPC Web applications. This module generate the Markdown formatted documentations about RPC parameters, requests, and responses. Using **Test::JSON::RPC::Autodoc**, we write the integrated tests, then these will be useful to share the JSON-RPC parameter rules with other developers.
+**Test::JSON::RPC::Autodoc** is a software for testing JSON-RPC Web applications. These modules generate the Markdown formatted documentations about RPC parameters, requests, and responses. Using **Test::JSON::RPC::Autodoc**, we just write and run the integrated tests, then documents will be generated. So it will be useful to share the JSON-RPC parameter rules with other developers.
 
 # METHODS
 
-## **new(%options)**
+## Test::JSON::RPC::Autodoc
+
+### **new(%options)**
 
     my $test = Test::JSON::RPC::Autodoc->new(
-        app => $app, # PSGI application, required
-        document_root => './documents', # output directory for documents, optional, default is './docs'
-        path => '/rpc' # JSON-RPC endpoint path, optional, default is '/'
+        app => $app,
+        document_root => './documents',
+        path => '/rpc'
     );
 
 Create a new Test::JSON::RPC::Autodoc instance. Possible options are:
@@ -71,16 +73,70 @@ Create a new Test::JSON::RPC::Autodoc instance. Possible options are:
 
     JSON-RPC endpoint path, optional, default is '/'.
 
-## **new\_request()**
+### **new\_request()**
 
 Return a new Test::JSON::RPC::Autodoc::Request instance.
 
-## **write('echo.md')**
+### **write('echo.md')**
+
+Save the document named as a given parameter filename.
+
+## Test::JSON::RPC::Autodoc::Request
+
+Test::JSON::RPC::Autodoc::Request is a sub-class of [HTTP::Request](https://metacpan.org/pod/HTTP::Request). Extended with these methods.
+
+### **$request->params(%options)**
+
+    $request->params(
+        language => { isa => 'Str', default => 'English', required => 1, documentation => 'Your language' },
+        country => { isa => 'Str', documentation => 'Your country' }
+    );
+
+Take parameters with the rules for calling JSON-RPC a method.
+To validate parameters this module use [Data::Validator](https://metacpan.org/pod/Data::Validator) module internal.
+Attributes of rules are below:
+
+- `isa => $type: Str`
+
+    The type of the property, which can be `Mouse` Type constraint name.
+
+- `required => $value: Bool`
+
+    If true, the parameter must be setted.
+
+- `default => $value: Str`
+
+    The default value for the parameter. If the argument is blank, this value will be used.
+
+- `documentation => $doc: Str`
+
+    Description of the parameter. This will be used when the Markdown documents are generated.
+
+### **$request->post\_ok($method, $params)**
+
+    $request->post_ok('echo', { language => 'Perl', country => 'Japan' });
+
+Post parameters to the specified method on your JSON-RPC application and check the parameters as tests.
+If the response code is 200, it will return `OK`.
+
+### **$request->response()**
+
+Return the last response as a Test::JSON::RPC::Autodoc::Response instance.
+
+## Test::JSON::RPC::Autodoc::Response
+
+Test::JSON::RPC::Autodoc::Response is a sub-class of [HTTP::Response](https://metacpan.org/pod/HTTP::Response). Extended with these methods.
+
+### **$response->from\_json()**
+
+Return a Perl-Object of the JSON response content. That is parsed by JSON parser.
 
 # SEE ALSO
 
 - [Test::JsonAPI::Autodoc](https://metacpan.org/pod/Test::JsonAPI::Autodoc)
 - "autodoc": [https://github.com/r7kamura/autodoc](https://github.com/r7kamura/autodoc)
+- [Shodo](https://metacpan.org/pod/Shodo)
+- [Data::Validator](https://metacpan.org/pod/Data::Validator)
 
 # LICENSE
 

@@ -46,7 +46,7 @@ __END__
 
 =head1 NAME
 
-Test::JSON::RPC::Autodoc - Generate documents automatically with the tests for JSON-RPC
+Test::JSON::RPC::Autodoc - Testing tools for auto generating documents of JSON-RPC applications
 
 =head1 SYNOPSIS
 
@@ -90,16 +90,18 @@ Test::JSON::RPC::Autodoc - Generate documents automatically with the tests for J
 
 =head1 DESCRIPTION
 
-B<Test::JSON::RPC::Autodoc> is a software for testing JSON-RPC Web applications. This module generate the Markdown formatted documentations about RPC parameters, requests, and responses. Using B<Test::JSON::RPC::Autodoc>, we write the integrated tests, then these will be useful to share the JSON-RPC parameter rules with other developers.
+B<Test::JSON::RPC::Autodoc> is a software for testing JSON-RPC Web applications. These modules generate the Markdown formatted documentations about RPC parameters, requests, and responses. Using B<Test::JSON::RPC::Autodoc>, we just write and run the integrated tests, then documents will be generated. So it will be useful to share the JSON-RPC parameter rules with other developers.
 
 =head1 METHODS
 
-=head2 B<< new(%options) >>
+=head2 Test::JSON::RPC::Autodoc
+
+=head3 B<< new(%options) >>
 
     my $test = Test::JSON::RPC::Autodoc->new(
-        app => $app, # PSGI application, required
-        document_root => './documents', # output directory for documents, optional, default is './docs'
-        path => '/rpc' # JSON-RPC endpoint path, optional, default is '/'
+        app => $app,
+        document_root => './documents',
+        path => '/rpc'
     );
 
 Create a new Test::JSON::RPC::Autodoc instance. Possible options are:
@@ -120,19 +122,79 @@ JSON-RPC endpoint path, optional, default is '/'.
 
 =back
 
-=head2 B<< new_request() >>
+=head3 B<< new_request() >>
 
 Return a new Test::JSON::RPC::Autodoc::Request instance.
 
-=head2 B<< write('echo.md') >>
+=head3 B<< write('echo.md') >>
+
+Save the document named as a given parameter filename.
+
+=head2 Test::JSON::RPC::Autodoc::Request
+
+Test::JSON::RPC::Autodoc::Request is a sub-class of L<HTTP::Request>. Extended with these methods.
+
+=head3 B<< $request->params(%options) >>
+
+    $request->params(
+        language => { isa => 'Str', default => 'English', required => 1, documentation => 'Your language' },
+        country => { isa => 'Str', documentation => 'Your country' }
+    );
+
+Take parameters with the rules for calling JSON-RPC a method.
+To validate parameters this module use L<Data::Validator> module internal.
+Attributes of rules are below:
+
+=over
+
+=item C<< isa => $type: Str >>
+
+The type of the property, which can be C<Mouse> Type constraint name.
+
+=item C<< required => $value: Bool >>
+
+If true, the parameter must be setted.
+
+=item C<< default => $value: Str >>
+
+The default value for the parameter. If the argument is blank, this value will be used.
+
+=item C<< documentation => $doc: Str >>
+
+Description of the parameter. This will be used when the Markdown documents are generated.
+
+=back
+
+=head3 B<< $request->post_ok($method, $params) >>
+
+    $request->post_ok('echo', { language => 'Perl', country => 'Japan' });
+
+Post parameters to the specified method on your JSON-RPC application and check the parameters as tests.
+If the response code is 200, it will return C<OK>.
+
+=head3 B<< $request->response() >>
+
+Return the last response as a Test::JSON::RPC::Autodoc::Response instance.
+
+=head2 Test::JSON::RPC::Autodoc::Response
+
+Test::JSON::RPC::Autodoc::Response is a sub-class of L<HTTP::Response>. Extended with these methods.
+
+=head3 B<< $response->from_json() >>
+
+Return a Perl-Object of the JSON response content. That is parsed by JSON parser.
 
 =head1 SEE ALSO
 
 =over
 
-=item * L<Test::JsonAPI::Autodoc>
+=item L<Test::JsonAPI::Autodoc>
 
-=item * "autodoc": L<https://github.com/r7kamura/autodoc>
+=item "autodoc": L<https://github.com/r7kamura/autodoc>
+
+=item L<Shodo>
+
+=item L<Data::Validator>
 
 =back
 

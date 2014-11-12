@@ -1,5 +1,5 @@
 {
-   "abstract" : "Generate documents automatically with the tests for JSON-RPC",
+   "abstract" : "Testing tools for auto generating documents of JSON-RPC applications",
    "author" : [
       "Yusuke Wada <yusuke@kamawada.com>"
    ],
