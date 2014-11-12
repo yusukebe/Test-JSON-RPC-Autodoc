@@ -7,7 +7,7 @@ use Path::Tiny qw/path/;
 use Text::Xslate;
 use Test::JSON::RPC::Autodoc::Request;
 
-our $VERSION = "0.01";
+our $VERSION = "0.02";
 
 sub new {
     my ($class, %opt) = @_;
@@ -79,13 +79,12 @@ Test::JSON::RPC::Autodoc - Testing tools for auto generating documents of JSON-R
     my $rpc_req = $test->new_request();
     $rpc_req->params(
         language => { isa => 'Str', default => 'English', required => 1 },
-        country => { isa => 'Str', documentation => 'Your country' }
+        country  => { isa => 'Str', documentation => 'Your country' }
     );
     $rpc_req->post_ok( 'echo', { language => 'Perl', country => 'Japan' } );
-    my $res = $rpc_req->response();
-    is $res->code, 200;
+    my $res  = $rpc_req->response();
     my $data = $res->from_json();
-    is $data->{result}{language}, 'Perl';
+    is_deeply $data->{result}, { language => 'Perl', country => 'Japan' };
 
     $test->write('echo.md');
     done_testing();

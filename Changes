@@ -2,6 +2,10 @@ Revision history for Perl extension Test-JSON-RPC-Autodoc
 
 {{$NEXT}}
 
+0.02 2014-11-12T03:43:25Z
+
+    - improve SYNOPSIS
+
 0.01 2014-11-12T02:44:08Z
 
     - original version
