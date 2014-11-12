@@ -55,6 +55,7 @@ Test::JSON::RPC::Autodoc - Testing tools for auto generating documents of JSON-R
     use JSON qw/to_json from_json/;
     use Test::JSON::RPC::Autodoc;
 
+    # Making a PSGI-based JSON-RPC application
     my $app = sub {
         my $env  = shift;
         my $req  = Plack::Request->new($env);
@@ -68,6 +69,7 @@ Test::JSON::RPC::Autodoc - Testing tools for auto generating documents of JSON-R
         return [ 200, [ 'Content-Type' => 'application/json' ], [$json] ];
     };
 
+    # Let's test
     my $test = Test::JSON::RPC::Autodoc->new(
         document_root => './docs',
         app           => $app,
