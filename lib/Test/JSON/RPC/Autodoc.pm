@@ -7,7 +7,7 @@ use Path::Tiny qw/path/;
 use Text::Xslate;
 use Test::JSON::RPC::Autodoc::Request;
 
-our $VERSION = "0.02";
+our $VERSION = "0.03";
 
 sub new {
     my ($class, %opt) = @_;

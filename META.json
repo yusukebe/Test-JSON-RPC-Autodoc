@@ -48,7 +48,7 @@
             "HTTP::Message" : "0",
             "JSON" : "0",
             "Path::Tiny" : "0",
-            "Plack" : "0",
+            "Plack" : "1.0033",
             "Test::Simple" : "0",
             "Text::Xslate" : "0",
             "parent" : "0",
@@ -74,6 +74,6 @@
          "web" : "https://github.com/yusukebe/Test-JSON-RPC-Autodoc"
       }
    },
-   "version" : "0.02",
+   "version" : "0.03",
    "x_authority" : "cpan:YUSUKEBE"
 }

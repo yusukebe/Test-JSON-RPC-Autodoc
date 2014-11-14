@@ -4,7 +4,7 @@ requires 'HTTP::Message';
 requires 'Clone';
 requires 'JSON';
 requires 'Path::Tiny';
-requires 'Plack';
+requires 'Plack', '1.0033';
 requires 'Data::Validator';
 requires 'File::ShareDir';
 requires 'Text::Xslate';
