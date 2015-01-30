@@ -9,6 +9,8 @@ requires 'Data::Validator';
 requires 'File::ShareDir';
 requires 'Text::Xslate';
 requires 'Test::Simple';
+requires 'Data::Recursive::Encode';
+
 
 on 'test' => sub {
     requires 'Test::More', '0.98';
