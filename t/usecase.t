@@ -29,7 +29,7 @@ my $test = Test::JSON::RPC::Autodoc->new(
 );
 
 subtest 'usual-pattern' => sub {
-    my $rpc_req = $test->new_request();
+    my $rpc_req = $test->new_request('echo-method');
     $rpc_req->params(
         language => { isa => 'Str', default => 'English', required => 1, documentation => 'Your language' },
         country => { isa => 'Str', documentation => 'Your country' }

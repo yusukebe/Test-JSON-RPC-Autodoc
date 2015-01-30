@@ -18,6 +18,7 @@ sub new {
     $self->uri($opt{path} || '/');
     $self->{app} = $opt{app};
     $self->{id} = $opt{id} || 1;
+    $self->{label} = $opt{label} || '';
     return $self;
 }
 
@@ -104,6 +105,7 @@ sub _make_request {
 
 sub method { shift->{method} }
 sub rule { shift->{rule} }
+sub label { shift->{label} }
 
 sub response {
     my $self = shift;

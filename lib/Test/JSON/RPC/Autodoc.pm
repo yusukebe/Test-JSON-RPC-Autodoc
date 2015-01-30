@@ -22,9 +22,11 @@ sub new {
 }
 
 sub new_request {
-    my $self = shift;
+    my ($self, $label) = @_;
     my $req = Test::JSON::RPC::Autodoc::Request->new(
-        app => $self->{app}, path => $self->{path}
+        app => $self->{app},
+        path => $self->{path},
+        label => $label || '',
     );
     push @{$self->{requests}}, $req;
     return $req;

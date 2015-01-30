@@ -3,7 +3,7 @@
 
 ## METHOD `<: $request.method :>`
 
-### Request
+### Request `<: $request.label :>`
 
 ```json
 <: $request.content | mark_raw -:>
