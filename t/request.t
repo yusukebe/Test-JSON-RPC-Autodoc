@@ -16,7 +16,6 @@ $request->post_not_ok('method', {});
 $request->post_not_ok('method', { foo => 'bar' });
 $request->post_ok('method', { foo => 10 });
 
-is $request->method, 'method';
 is_deeply $request->rule, { foo => { isa => 'Int', required => 1 } };
 
 my $res = $request->response();
@@ -26,5 +25,9 @@ isa_ok $res, 'HTTP::Response';
 my $ref = $res->from_json();
 ok $ref;
 is_deeply $ref, { message => 'hello' };
+
+$request->post_ok('method', { foo => 10 }, [ [Foo => 'bar'] ]);
+is $request->headers->header('Foo'), 'bar';
+my $res = $request->response();
 
 done_testing();

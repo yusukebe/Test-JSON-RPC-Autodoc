@@ -2,6 +2,10 @@ Revision history for Perl extension Test-JSON-RPC-Autodoc
 
 {{$NEXT}}
 
+0.04 2015-01-30T05:36:03Z
+
+    - fixed some bugs
+
 0.03 2014-11-14T23:57:08Z
 
     - fixed Plack module version

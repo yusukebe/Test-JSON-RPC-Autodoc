@@ -3,12 +3,14 @@ use strict;
 use warnings;
 use HTTP::Message::PSGI;
 use parent qw/HTTP::Response/;
+use Data::Recursive::Encode;
 use JSON qw//;
 
 sub HTTP::Response::from_json {
     my $self = shift;
     my $content = $self->decoded_content();
     return unless $content;
+    $content = Data::Recursive::Encode->decode_utf8($content);
     return JSON::from_json($content);
 }
 

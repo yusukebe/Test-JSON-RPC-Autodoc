@@ -4,6 +4,7 @@ use FindBin;
 use Plack::Request;
 use JSON qw/to_json from_json/;
 use Test::JSON::RPC::Autodoc;
+use utf8;
 
 my $app = sub {
     my $env = shift;
@@ -27,16 +28,37 @@ my $test = Test::JSON::RPC::Autodoc->new(
     path => '/rpc'
 );
 
-my $rpc_req = $test->new_request();
-$rpc_req->params(
-    language => { isa => 'Str', default => 'English', required => 1, documentation => 'Your language' },
-    country => { isa => 'Str', documentation => 'Your country' }
-);
-$rpc_req->post_ok('echo', { language => 'Perl', country => 'Japan' });
-my $res = $rpc_req->response();
-is $res->code, 200;
-my $data = $res->from_json();
-is_deeply $data->{result}, { language => 'Perl', country => 'Japan' };
+subtest 'usual-pattern' => sub {
+    my $rpc_req = $test->new_request();
+    $rpc_req->params(
+        language => { isa => 'Str', default => 'English', required => 1, documentation => 'Your language' },
+        country => { isa => 'Str', documentation => 'Your country' }
+    );
+    $rpc_req->post_ok('echo', { language => 'Perl', country => 'Japan' });
+    my $res = $rpc_req->response();
+    is $res->code, 200;
+    my $data = $res->from_json();
+    is_deeply $data->{result}, { language => 'Perl', country => 'Japan' };
+};
+
+subtest 'utf8' => sub {
+    my $rpc_req = $test->new_request();
+    $rpc_req->params(
+        language => { isa => 'Str', default => 'English', required => 1, documentation => 'あなたの言語は？' },
+    );
+    $rpc_req->post_ok('echo', { language => '日本語' });
+    my $res = $rpc_req->response();
+    is $res->code, 200;
+    my $data = $res->from_json();
+    is_deeply $data->{result}, { language => '日本語' };
+};
+
+subtest 'blank params' => sub {
+    my $rpc_req = $test->new_request();
+    $rpc_req->post_ok('echo');
+    my $res = $rpc_req->response();
+    is $res->code, 200;
+};
 
 $test->write('sample.md');
 

@@ -9,6 +9,7 @@ use Try::Tiny;
 use Test::JSON::RPC::Autodoc::Response;
 use Test::JSON::RPC::Autodoc::Validator;
 use Plack::Test::MockHTTP;
+use Data::Recursive::Encode;
 
 sub new {
     my ($class, %opt) = @_;
@@ -22,7 +23,6 @@ sub new {
 
 sub params {
     my ($self, %params) = @_;
-    return $self->{validator} unless %params;
     $self->{rule} = clone \%params;
     for my $p (%params) {
         next unless ref $p eq 'HASH';
@@ -38,14 +38,21 @@ sub params {
     return $validator;
 }
 
-sub post_ok {
-    my ($self, $method, $params) = @_;
-    my $args = $self->{validator}->validate(%$params);
-    my $ok = 1;
-    $ok = 0 if $self->{validator}->has_errors;
-    $self->{validator}->clear_errors();
+sub validator {
+    my $self = shift;
+    return $self->{validator} if $self->{validator};
+    return Data::Validator->new->with('NoThrow');
+}
 
-    $self->_make_request($method, $params);
+sub post_ok {
+    my ($self, $method, $params, $headers) = @_;
+    $params ||= {};
+    my $args = $self->validator->validate(%$params);
+    my $ok = 1;
+    $ok = 0 if $self->validator->has_errors;
+    $self->validator->clear_errors();
+
+    $self->_make_request($method, $params, $headers);
 
     my $mock = Plack::Test::MockHTTP->new($self->{app});
     my $res = $mock->request($self);
@@ -53,19 +60,19 @@ sub post_ok {
     my $Test = Test::Builder->new();
     $Test->ok($ok);
 
-    $self->{method} = $method;
     $self->{response} = $res;
     return $res;
 }
 
 sub post_not_ok {
-    my ($self, $method, $params) = @_;
-    my $args = $self->{validator}->validate(%$params);
+    my ($self, $method, $params, $headers) = @_;
+    $params ||= {};
+    my $args = $self->validator->validate(%$params);
 
-    my $ok = 1 if $self->{validator}->has_errors;
-    $self->{validator}->clear_errors();
+    my $ok = 1 if $self->validator->has_errors;
+    $self->validator->clear_errors();
 
-    $self->_make_request($method, $params);
+    $self->_make_request($method, $params, $headers);
 
     my $mock = Plack::Test::MockHTTP->new($self->{app});
     my $res = $mock->request($self);
@@ -75,7 +82,8 @@ sub post_not_ok {
 }
 
 sub _make_request {
-    my ($self, $method, $params) = @_;
+    my ($self, $method, $params, $headers) = @_;
+    $params = Data::Recursive::Encode->encode_utf8($params);
     my $json = to_json(
         {
             jsonrpc => '2.0',
@@ -86,6 +94,11 @@ sub _make_request {
     );
     $self->header('Content-Type' => 'application/json');
     $self->header('Content-Length' => length $json);
+    if($headers && ref $headers eq 'ARRAY') {
+        for my $header (@$headers) {
+            $self->header(@$header);
+        }
+    }
     $self->content($json);
 }
 
