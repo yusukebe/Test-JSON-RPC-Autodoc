@@ -2,6 +2,8 @@ Revision history for Perl extension Test-JSON-RPC-Autodoc
 
 {{$NEXT}}
 
+0.06 2015-01-30T06:22:44Z
+
     - fixed utf8 issues
 
 0.05 2015-01-30T05:40:21Z
