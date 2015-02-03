@@ -82,6 +82,14 @@ sub post_not_ok {
     $Test->ok($ok);
 }
 
+sub post_only {
+    my ($self, $params, $method, $headers) = @_;
+    $self->_make_request($method, $params, $headers);
+    my $mock = Plack::Test::MockHTTP->new($self->{app});
+    my $res = $mock->request($self);
+    return $res;
+}
+
 sub _make_request {
     my ($self, $method, $params, $headers) = @_;
     $params = Data::Recursive::Encode->encode_utf8($params);
