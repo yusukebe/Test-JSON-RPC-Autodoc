@@ -1,7 +1,7 @@
 
 ## METHOD `POST`
 
-### Request
+### Request `echo-method`
 
 ```json
 {
@@ -40,7 +40,7 @@
 
 ## METHOD `POST`
 
-### Request
+### Request ``
 
 ```json
 {
@@ -67,7 +67,7 @@
    "jsonrpc" : "2.0",
    "id" : 1,
    "result" : {
-      "language" : "æ¥æ¬èª"
+      "language" : "日本語"
    }
 }
 ```
@@ -75,7 +75,7 @@
 
 ## METHOD `POST`
 
-### Request
+### Request ``
 
 ```json
 {

@@ -65,6 +65,14 @@ sub post_ok {
     return $res;
 }
 
+sub post_only {
+    my ($self, $method, $params, $headers) = @_;
+    $self->_make_request($method, $params, $headers);
+    my $mock = Plack::Test::MockHTTP->new($self->{app});
+    my $res = $mock->request($self);
+    return $res;
+}
+
 sub post_not_ok {
     my ($self, $method, $params, $headers) = @_;
     $params ||= {};
@@ -80,14 +88,6 @@ sub post_not_ok {
     $ok = 1 if $res->code == 200;
     my $Test = Test::Builder->new();
     $Test->ok($ok);
-}
-
-sub post_only {
-    my ($self, $params, $method, $headers) = @_;
-    $self->_make_request($method, $params, $headers);
-    my $mock = Plack::Test::MockHTTP->new($self->{app});
-    my $res = $mock->request($self);
-    return $res;
 }
 
 sub _make_request {
