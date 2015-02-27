@@ -2,6 +2,8 @@
 
 {{$NEXT}}
 
+0.09 2015-02-27T00:33:46Z
+
    - only "post_ok" method will be documented
    - use utf8 flag on json-module
 
