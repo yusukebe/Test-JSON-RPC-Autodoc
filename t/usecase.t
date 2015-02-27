@@ -46,9 +46,10 @@ subtest 'utf8' => sub {
     $rpc_req->params(
         language => { isa => 'Str', default => 'English', required => 1, documentation => 'あなたの言語は？' },
     );
-    ok $rpc_req->post_only('echo', { language => '日本語' });
+    my $res = $rpc_req->post_only('echo', { language => '日本語' });
+    is $res->code, 200;
     $rpc_req->post_ok('echo', { language => '日本語' });
-    my $res = $rpc_req->response();
+    $res = $rpc_req->response();
     is $res->code, 200;
     my $data = $res->from_json();
     is_deeply $data->{result}, { language => '日本語' };

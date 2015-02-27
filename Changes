@@ -2,6 +2,9 @@
 
 {{$NEXT}}
 
+   - only "post_ok" method will be documented
+   - use utf8 flag on json-module
+
 0.08 2015-02-07T02:50:09Z
 
    - fixed utf8 issue for post_only

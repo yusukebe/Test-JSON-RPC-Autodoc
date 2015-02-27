@@ -9,7 +9,6 @@ use Try::Tiny;
 use Test::JSON::RPC::Autodoc::Response;
 use Test::JSON::RPC::Autodoc::Validator;
 use Plack::Test::MockHTTP;
-use Data::Recursive::Encode;
 
 sub new {
     my ($class, %opt) = @_;
@@ -20,6 +19,13 @@ sub new {
     $self->{id} = $opt{id} || 1;
     $self->{label} = $opt{label} || '';
     return $self;
+}
+
+sub main_content {
+    my ($self, $content) = @_;
+    return $self->{main_content} unless $content;
+    $self->{main_content} = $content;
+    return $content;
 }
 
 sub params {
@@ -53,7 +59,7 @@ sub post_ok {
     $ok = 0 if $self->validator->has_errors;
     $self->validator->clear_errors();
 
-    $self->_make_request($method, $params, $headers);
+    my $json = $self->_make_request($method, $params, $headers);
 
     my $mock = Plack::Test::MockHTTP->new($self->{app});
     my $res = $mock->request($self);
@@ -62,6 +68,7 @@ sub post_ok {
     $Test->ok($ok);
 
     $self->{response} = $res;
+    $self->{main_content} = $json;
     return $res;
 }
 
@@ -92,14 +99,13 @@ sub post_not_ok {
 
 sub _make_request {
     my ($self, $method, $params, $headers) = @_;
-    $params = Data::Recursive::Encode->encode_utf8($params);
     my $json = to_json(
         {
             jsonrpc => '2.0',
             id => $self->{id},
             method  => $method,
             params  => $params,
-        }, { pretty => 1 }
+        }, { pretty => 1, utf8 => 1 }
     );
     $self->header('Content-Type' => 'application/json');
     $self->header('Content-Length' => length $json);
@@ -109,6 +115,7 @@ sub _make_request {
         }
     }
     $self->content($json);
+    return $json;
 }
 
 sub method { shift->{method} }

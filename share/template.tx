@@ -6,7 +6,7 @@
 ### Request `<: $request.label :>`
 
 ```json
-<: $request.content | mark_raw -:>
+<: $request.main_content | mark_raw -:>
 ```
 
 ### Parameters
