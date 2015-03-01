@@ -5,12 +5,14 @@
 
 : if $request.label {
 ### Request `<: $request.label :>`
+: }else{
+### Request
 : }
 
 #### Headers
 
 ```
-<: $request.headers.as_string | mark_raw :>
+<: $request.headers.as_string | mark_raw -:>
 ```
 
 #### Content
@@ -19,7 +21,7 @@
 <: $request.main_content | mark_raw -:>
 ```
 
-### Parameters
+#### Parameters
 
 : for $request.rule.keys() -> $name {
 : if (my $documentation = $request.rule[$name]["documentation"]) {
