@@ -1,7 +1,17 @@
 
-## METHOD `POST`
+## METHOD `echo`
 
 ### Request `echo-method`
+
+#### Headers
+
+```
+Content-Length: 135
+Content-Type: application/json
+
+```
+
+#### Content
 
 ```json
 {
@@ -38,9 +48,18 @@
 ```
 
 
-## METHOD `POST`
+## METHOD `echo`
 
-### Request ``
+
+#### Headers
+
+```
+Content-Length: 113
+Content-Type: application/json
+
+```
+
+#### Content
 
 ```json
 {
@@ -73,9 +92,18 @@
 ```
 
 
-## METHOD `POST`
+## METHOD `echo`
 
-### Request ``
+
+#### Headers
+
+```
+Content-Length: 78
+Content-Type: application/json
+
+```
+
+#### Content
 
 ```json
 {

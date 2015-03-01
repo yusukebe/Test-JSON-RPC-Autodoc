@@ -13,12 +13,19 @@ use Plack::Test::MockHTTP;
 sub new {
     my ($class, %opt) = @_;
     my $self = $class->SUPER::new();
-    $self->{method} = 'POST';
     $self->uri($opt{path} || '/');
+    $self->{method} = 'POST';
     $self->{app} = $opt{app};
     $self->{id} = $opt{id} || 1;
-    $self->{label} = $opt{label} || '';
+    $self->{label} = $opt{label} || undef;
     return $self;
+}
+
+sub json_rpc_method {
+    my ($self, $name) = @_;
+    return $self->{json_rpc_method} unless $name;
+    $self->{json_rpc_method} = $name;
+    return $name;
 }
 
 sub main_content {
@@ -69,6 +76,7 @@ sub post_ok {
 
     $self->{response} = $res;
     $self->{main_content} = $json;
+    $self->{json_rpc_method} = $method;
     return $res;
 }
 

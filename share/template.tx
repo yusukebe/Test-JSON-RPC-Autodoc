@@ -1,9 +1,19 @@
 : for $requests -> $request {
 : next if !$request.response;
 
-## METHOD `<: $request.method :>`
+## METHOD `<: $request.json_rpc_method :>`
 
+: if $request.label {
 ### Request `<: $request.label :>`
+: }
+
+#### Headers
+
+```
+<: $request.headers.as_string | mark_raw :>
+```
+
+#### Content
 
 ```json
 <: $request.main_content | mark_raw -:>
