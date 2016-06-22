@@ -7,7 +7,7 @@ use Path::Tiny qw/path/;
 use Text::Xslate;
 use Test::JSON::RPC::Autodoc::Request;
 
-our $VERSION = "0.11";
+our $VERSION = "0.12";
 
 sub new {
     my ($class, %opt) = @_;
@@ -17,6 +17,7 @@ sub new {
         document_root => $opt{document_root} || 'docs',
         path => $opt{path} || '/',
         requests => [],
+        index_file => $opt{index_file} || undef,
     }, $class;
     return $self;
 }
@@ -34,11 +35,28 @@ sub new_request {
 
 sub write {
     my ($self, $filename) = @_;
-    my $dir = './share';
-    $dir = File::ShareDir::dist_dir('Test-JSON-RPC-Autodoc') unless -d $dir;
-    my $tx = Text::Xslate->new( path => $dir );
+    my $tx = $self->load_tx();
     my $text = $tx->render('template.tx', { requests => $self->{requests} });
     path($self->{document_root}, $filename)->spew_utf8($text);
+    $self->append_to_index($filename) if $self->{index_file};
+}
+
+sub append_to_index {
+    my ($self, $filename) = @_;
+    my $tx = $self->load_tx();
+    my $text = $tx->render('index_part.tx', {
+        requests => $self->{requests},
+        path => path($filename),
+    });
+    my $path = path($self->{document_root}, $self->{index_file});
+    $path->remove if -f $path->absolute;
+    $path->append_utf8($text);
+}
+
+sub load_tx {
+    my $dir = './share';
+    $dir = File::ShareDir::dist_dir('Test-JSON-RPC-Autodoc') unless -d $dir;
+    return Text::Xslate->new( path => $dir );
 }
 
 1;

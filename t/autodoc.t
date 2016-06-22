@@ -8,7 +8,11 @@ my $app = sub {
     my $json = '{ "message":"hello" }';
     return [ 200, [ 'Content-Type' => 'application/json' ], [$json] ];  
 };
-my $test = Test::JSON::RPC::Autodoc->new( app => $app, document_root => './t' );
+my $test = Test::JSON::RPC::Autodoc->new(
+    app           => $app,
+    document_root => './t',
+    index_file    => 'index.md'
+);
 ok $test;
 isa_ok $test, 'Test::JSON::RPC::Autodoc';
 
@@ -18,6 +22,8 @@ isa_ok $request, 'Test::JSON::RPC::Autodoc::Request';
 
 $test->write('./blank.md');
 ok -f './t/blank.md';
+ok -f './t/index.md';
 unlink './t/blank.md';
+unlink './t/index.md';
 
 done_testing();

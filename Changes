@@ -2,6 +2,10 @@
 
 {{$NEXT}}
 
+0.12 2016-06-22T08:12:33Z
+
+   - support index of api documents
+
 0.11 2015-03-01T11:42:12Z
 
    - fixed some issues for the template

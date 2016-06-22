@@ -1,0 +1,7 @@
+## [<: $path.stringify :>](<: $path.relative :>)
+
+: for $requests -> $request {
+: next if !$request.response;
+* METHOD `<: $request.json_rpc_method :>`
+  * <: $request.label :>
+: }
