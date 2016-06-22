@@ -7,7 +7,7 @@ use Path::Tiny qw/path/;
 use Text::Xslate;
 use Test::JSON::RPC::Autodoc::Request;
 
-our $VERSION = "0.12";
+our $VERSION = "0.13";
 
 sub new {
     my ($class, %opt) = @_;
@@ -49,7 +49,6 @@ sub append_to_index {
         path => path($filename),
     });
     my $path = path($self->{document_root}, $self->{index_file});
-    $path->remove if -f $path->absolute;
     $path->append_utf8($text);
 }
 

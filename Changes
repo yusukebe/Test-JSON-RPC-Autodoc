@@ -2,6 +2,10 @@
 
 {{$NEXT}}
 
+0.13 2016-06-22T09:02:49Z
+
+   - fixed bugs about writing index document
+
 0.12 2016-06-22T08:12:33Z
 
    - support index of api documents
